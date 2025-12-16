@@ -3,11 +3,36 @@ import { SplitPane, ThemeToggle } from '@shared/ui';
 import './styles/App.css';
 import { Editor } from '@features/editor/ui';
 import { Preview } from '@features/preview/ui';
-import { useState } from 'react';
+import { useLocalStorage } from '@shared/hooks';
+
+const DEFAULT_MARKDOWN = `# Welcome to Markdown Editor
+
+  Start writing your markdown here!
+
+  ## Features
+
+  - **Live Preview** with syntax highlighting
+  - **Dark/Light Theme** support
+  - **Auto-save** to localStorage
+  - **Resizable panels**
+
+  ## Code Example
+
+  \`\`\`javascript
+  function greet(name) {
+    console.log(\`Hello, \${name}!\`);
+  }
+
+  greet('World');
+  \`\`\`
+
+  > Happy writing! 🚀
+  `;
 
 function App() {
-  const [markdown, setMarkdown] = useState<string>(
-    '# Hello World\n\nStart writing your markdown here!'
+  const [markdown, setMarkdown] = useLocalStorage(
+    'markdown-content',
+    DEFAULT_MARKDOWN
   );
 
   return (

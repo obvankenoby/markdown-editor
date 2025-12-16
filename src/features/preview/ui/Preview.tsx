@@ -1,14 +1,22 @@
-import { parseMarkdown } from '@shared/lib/markdown';
-
-import './Preview.css';
 import { useMemo } from 'react';
+import { parseMarkdown } from '@shared/lib/markdown';
+import { useDebounce } from '@shared/hooks';
+import './Preview.css';
 
 interface PreviewProps {
   content: string;
 }
 
 export function Preview({ content }: PreviewProps) {
-  const html = useMemo(() => parseMarkdown(content), [content]);
+  // Debounce контента - парсим только после 300ms тишины
+  const debouncedContent = useDebounce(content, 300);
+
+  // useMemo - парсим только при изменении debouncedContent
+  const html = useMemo(
+    () => parseMarkdown(debouncedContent),
+    [debouncedContent]
+  );
+
   return (
     <div className="preview">
       <div className="preview__toolbar">
